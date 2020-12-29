@@ -1,21 +1,28 @@
-import { motion } from 'framer-motion'
+import { FC } from 'react'
+
+import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
+
+interface StyleProps extends HTMLMotionProps<'nav'> {
+  letters: string
+  background: string
+}
 
 interface ListItemProps {
   bottom?: boolean
   pathname: string
   buttonId: string
+  selected: string
 }
 
-const Style = styled(motion.nav)`
+const Style = styled(motion.nav as FC<StyleProps>)`
   position: fixed;
-  z-index: 1;
   left: 0;
   top: 0;
 
   height: 100vh;
 
-  background-color: #d65881;
+  background-color: ${({ background }) => background};
 
   .icon {
     width: 24px;
@@ -26,8 +33,8 @@ const Style = styled(motion.nav)`
       width: 24px;
       height: 24px;
 
-      fill: #fcfcfc;
-      stroke: #fcfcfc;
+      fill: ${({ letters }) => letters};
+      stroke: ${({ letters }) => letters};
     }
   }
 
@@ -40,8 +47,10 @@ const Style = styled(motion.nav)`
     height: 72px;
 
     white-space: nowrap;
-    padding-right: 24px;
-    color: #fcfcfc;
+
+    color: ${({ letters }) => letters};
+
+    cursor: default;
   }
 
   #title {
@@ -55,7 +64,7 @@ const Style = styled(motion.nav)`
     width: 100%;
     height: 72px;
 
-    border-bottom: solid 2px #fcfcfc;
+    border-bottom: solid 2px ${({ letters }) => letters};
   }
 
   .Hamburger {
@@ -94,12 +103,12 @@ export const ListItem = styled.li<ListItemProps>`
       left: 0;
     `}
 
-  ${({ pathname, buttonId }) => {
+  ${({ pathname, buttonId, selected }) => {
     return (
       pathname.includes(buttonId) &&
       css`
         ${`#${buttonId}`} {
-          background-color: #6e4850;
+          background-color: ${selected};
         }
       `
     )
@@ -109,3 +118,4 @@ export const ListItem = styled.li<ListItemProps>`
 export default Style
 
 Style.displayName = 'Sidebar-Style'
+ListItem.displayName = 'ListItem-Style'

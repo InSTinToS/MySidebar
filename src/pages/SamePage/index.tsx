@@ -31,12 +31,25 @@ const samePageRoutes: RouteProps[] = [
     path: '/samePage/fifthPage',
     icon: () => <AiFillCar />,
   },
+  {
+    label: 'Other Page',
+    path: '/otherPage',
+    icon: () => <AiFillCar />,
+    bottom: true,
+  },
 ]
 
 const SamePage: React.FC = () => {
   return (
     <>
-      <Sidebar routes={samePageRoutes} title='Same Page' samePage />
+      <Sidebar
+        routes={samePageRoutes}
+        title='Same Page'
+        selected='#6e4850'
+        letters='#fcfcfc'
+        background='#d65881'
+        samePage
+      />
       <SecondPage />
       <ThirdPage />
       <FourthPage />

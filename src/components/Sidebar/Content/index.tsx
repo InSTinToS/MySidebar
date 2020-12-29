@@ -11,7 +11,7 @@ const Content: React.FC = ({ children }) => {
   const content = {
     animateOpen: {
       x: '210px',
-      width: 'calc(100vw - 210px)',
+      width: 'calc(100vw - 210px - 15px)',
       transition: {
         type: 'tween',
         duration: 0.31,
@@ -19,7 +19,7 @@ const Content: React.FC = ({ children }) => {
     },
     animateClosed: {
       x: '72px',
-      width: 'calc(100vw - 72px)',
+      width: 'calc(100vw - 72px - 15px)',
       transition: {
         type: 'tween',
         duration: 0.19,

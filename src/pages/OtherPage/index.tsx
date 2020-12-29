@@ -36,7 +36,13 @@ const otherPageRoutes: RouteProps[] = [
 const OtherPage: React.FC = () => {
   return (
     <>
-      <Sidebar routes={otherPageRoutes} title='Other Page' />
+      <Sidebar
+        routes={otherPageRoutes}
+        title='Other Page'
+        selected='#6e4850'
+        letters='#fcfcfc'
+        background='#d65881'
+      />
       <SecondPage />
       <ThirdPage />
       <FourthPage />

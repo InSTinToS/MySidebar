@@ -22,9 +22,19 @@ interface SidebarProps {
   routes: RouteProps[]
   title?: string
   samePage?: boolean
+  selected: string
+  letters: string
+  background: string
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ routes, title = '', samePage = false }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  routes,
+  title = '',
+  samePage = false,
+  selected,
+  letters,
+  background,
+}) => {
   const open = useSelector<StoreState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -125,9 +135,9 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, title = '', samePage = false 
   }, [])
 
   return (
-    <Style variants={motionBackground} animate={cycle()}>
+    <Style variants={motionBackground} animate={cycle()} letters={letters} background={background}>
       <div id='header'>
-        <Hamburger toggle={onToggle} state={open} />
+        <Hamburger toggle={onToggle} state={open} color={letters} />
 
         <AnimatePresence>
           {open && (
@@ -141,6 +151,7 @@ const Sidebar: React.FC<SidebarProps> = ({ routes, title = '', samePage = false 
       <motion.ul variants={motionUl} animate={cycle()}>
         {routes.map((route, index) => (
           <ListItem
+            selected={selected}
             key={route.path}
             bottom={route.bottom}
             pathname={pathname.replaceAll('/', '-')}

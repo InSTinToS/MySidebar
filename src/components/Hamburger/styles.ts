@@ -4,7 +4,6 @@ import styled from 'styled-components'
 export const MotionRect = styled(motion.rect).attrs({
   width: '24',
   height: '3',
-  fill: '#fff',
   rx: '2',
 })``
 

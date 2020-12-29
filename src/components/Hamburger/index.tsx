@@ -4,9 +4,10 @@ import Style, { MotionRect } from './styles'
 interface HamburgerProps {
   toggle?(): void
   state: boolean
+  color: string
 }
 
-const Hamburger: React.FC<HamburgerProps> = ({ toggle, state }) => {
+const Hamburger: React.FC<HamburgerProps> = ({ toggle, state, color }) => {
   function onHamburgerClick() {
     toggle?.()
   }
@@ -29,7 +30,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle, state }) => {
   const transition = { type: 'tween', duration: 0.2 }
 
   return (
-    <Style onClick={onHamburgerClick}>
+    <Style onClick={onHamburgerClick} color={color}>
       <svg width='24' height='17' xmlns='http://www.w3.org/2000/svg'>
         <MotionRect
           y='0'
@@ -37,6 +38,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle, state }) => {
           animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
+          fill={color}
         />
 
         <MotionRect
@@ -45,9 +47,11 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle, state }) => {
           animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
+          fill={color}
         />
 
         <MotionRect
+          fill={color}
           y='14'
           variants={third}
           animate={state ? 'open' : 'closed'}

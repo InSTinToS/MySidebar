@@ -24,10 +24,10 @@ export default createGlobalStyle`
   }
 
   button {
-    cursor: pointer;
-    
     border: none;
     background-color: transparent;
+
+    cursor: pointer;
   }
 
   input[type="checkbox"] {
