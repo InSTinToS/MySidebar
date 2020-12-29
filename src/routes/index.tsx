@@ -1,13 +1,19 @@
 import React from 'react'
 
-import Home from 'pages/Home'
+import SamePage from 'pages/SamePage'
+import OtherPage from 'pages/OtherPage'
 
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
 const Routes: React.FC = () => {
   return (
     <Switch>
-      <Route path='/' exact component={Home} />
+      <Route path='/' exact>
+        <Redirect to='/samePage' />
+      </Route>
+
+      <Route path='/samePage' component={SamePage} />
+      <Route path='/otherPage' component={OtherPage} />
     </Switch>
   )
 }
