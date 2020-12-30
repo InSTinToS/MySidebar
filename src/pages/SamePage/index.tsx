@@ -13,7 +13,8 @@ import { AiFillCar } from 'react-icons/ai'
 const samePageRoutes: RouteProps[] = [
   {
     label: 'Segunda',
-    path: '/samePage/secondPage',
+    path: '/samePage',
+    path2: '/samePage/secondPage',
     icon: () => <AiFillCar />,
   },
   {
@@ -48,8 +49,8 @@ const SamePage: React.FC = () => {
         selected='#6e4850'
         letters='#fcfcfc'
         background='#d65881'
-        samePage
       />
+
       <SecondPage />
       <ThirdPage />
       <FourthPage />

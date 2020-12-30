@@ -1,12 +1,12 @@
 import React from 'react'
 import Style from './styles'
 
-const SecondPage: React.FC = () => {
+const FirstPage: React.FC = () => {
   return (
     <Style>
-      <h1>SecondPage</h1>
+      <h1>FirstPage</h1>
     </Style>
   )
 }
 
-export default SecondPage
+export default FirstPage

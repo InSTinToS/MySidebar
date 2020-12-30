@@ -12,6 +12,7 @@ interface ListItemProps {
   bottom?: boolean
   pathname: string
   buttonId: string
+  buttonId2: string
   selected: string
 }
 
@@ -103,9 +104,12 @@ export const ListItem = styled.li<ListItemProps>`
       left: 0;
     `}
 
-  ${({ pathname, buttonId, selected }) => {
+  ${({ pathname, buttonId, buttonId2, selected }) => {
+    const regx = new RegExp(`^${buttonId}$`)
+    const regx2 = new RegExp(`^${buttonId2}$`)
+
     return (
-      pathname.includes(buttonId) &&
+      (pathname.match(regx) || pathname.match(regx2)) &&
       css`
         ${`#${buttonId}`} {
           background-color: ${selected};

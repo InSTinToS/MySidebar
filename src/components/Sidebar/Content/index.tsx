@@ -5,13 +5,17 @@ import { StoreState } from 'store'
 import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 
-const Content: React.FC = ({ children }) => {
+interface ContentProps {
+  noRetreatScroll?: boolean
+}
+
+const Content: React.FC<ContentProps> = ({ children, noRetreatScroll = false }) => {
   const open = useSelector<StoreState, boolean>(({ sidebar }) => sidebar.open)
 
   const content = {
     animateOpen: {
       x: '210px',
-      width: 'calc(100vw - 210px - 15px)',
+      width: noRetreatScroll ? 'calc(100vw - 210px)' : 'calc(100vw - 210px - 15px)',
       transition: {
         type: 'tween',
         duration: 0.31,
@@ -19,7 +23,7 @@ const Content: React.FC = ({ children }) => {
     },
     animateClosed: {
       x: '72px',
-      width: 'calc(100vw - 72px - 15px)',
+      width: noRetreatScroll ? 'calc(100vw - 72px)' : 'calc(100vw - 72px - 15px)',
       transition: {
         type: 'tween',
         duration: 0.19,
@@ -28,7 +32,11 @@ const Content: React.FC = ({ children }) => {
   }
 
   return (
-    <motion.section variants={content} animate={open ? 'animateOpen' : 'animateClosed'}>
+    <motion.section
+      variants={content}
+      animate={open ? 'animateOpen' : 'animateClosed'}
+      style={{ overflow: 'hidden' }}
+    >
       {children}
     </motion.section>
   )

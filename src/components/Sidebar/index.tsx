@@ -11,17 +11,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 
 export interface RouteProps {
-  // eslint-disable-next-line no-undef
   icon?: () => JSX.Element
+  component?: () => JSX.Element
   label: string
   path: string
   bottom?: boolean
+  exact?: boolean
+  path2?: string
 }
 
 interface SidebarProps {
   routes: RouteProps[]
   title?: string
-  samePage?: boolean
+  specialAnimation?: boolean
   selected: string
   letters: string
   background: string
@@ -30,7 +32,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({
   routes,
   title = '',
-  samePage = false,
+  specialAnimation = false,
   selected,
   letters,
   background,
@@ -128,10 +130,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   }
 
   useEffect(() => {
-    if (samePage) {
-      const searchArray = routes.map(route => (route.path === pathname ? 1 : 0))
-      window.scrollTo(0, height * searchArray.indexOf(1))
-    }
+    const searchArray = routes.map(route => (route.path === pathname ? 1 : 0))
+    window.scrollTo(0, height * searchArray.indexOf(1))
   }, [])
 
   return (
@@ -156,6 +156,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             bottom={route.bottom}
             pathname={pathname.replaceAll('/', '-')}
             buttonId={route.path.replaceAll('/', '-')}
+            buttonId2={route.path2 !== undefined ? route.path2.replaceAll('/', '-') : 'none'}
           >
             <button
               type='button'
