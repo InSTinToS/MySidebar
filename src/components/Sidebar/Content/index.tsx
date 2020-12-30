@@ -13,7 +13,7 @@ const Content: React.FC<ContentProps> = ({ children, noRetreatScroll = false }) 
   const open = useSelector<StoreState, boolean>(({ sidebar }) => sidebar.open)
 
   const content = {
-    animateOpen: {
+    open: {
       x: '210px',
       width: noRetreatScroll ? 'calc(100vw - 210px)' : 'calc(100vw - 210px - 15px)',
       transition: {
@@ -21,7 +21,7 @@ const Content: React.FC<ContentProps> = ({ children, noRetreatScroll = false }) 
         duration: 0.31,
       },
     },
-    animateClosed: {
+    closed: {
       x: '72px',
       width: noRetreatScroll ? 'calc(100vw - 72px)' : 'calc(100vw - 72px - 15px)',
       transition: {
@@ -34,7 +34,7 @@ const Content: React.FC<ContentProps> = ({ children, noRetreatScroll = false }) 
   return (
     <motion.section
       variants={content}
-      animate={open ? 'animateOpen' : 'animateClosed'}
+      animate={open ? 'open' : 'closed'}
       style={{ overflow: 'hidden' }}
     >
       {children}

@@ -9,10 +9,14 @@ import FifthPage from './FifthPage'
 
 import SamePage from 'pages/SamePage'
 
+import { StoreState } from 'store'
+import { ThemeState } from 'store/theme'
+
 import Sidebar, { RouteProps } from 'components/Sidebar'
 import Content from 'components/Sidebar/Content'
 
 import { AiFillCar } from 'react-icons/ai'
+import { useSelector } from 'react-redux'
 import { Route } from 'react-router-dom'
 
 const otherPageRoutes: RouteProps[] = [
@@ -57,14 +61,16 @@ const otherPageRoutes: RouteProps[] = [
 ]
 
 const OtherPage: React.FC = () => {
+  const { sidebar } = useSelector<StoreState, ThemeState>(store => store.theme)
+
   return (
     <>
       <Sidebar
         routes={otherPageRoutes}
         title='Other Page'
-        selected='#6e4850'
-        letters='#fcfcfc'
-        background='#d65881'
+        selected={sidebar.selected}
+        letters={sidebar.letters}
+        background={sidebar.background}
       />
 
       <Content>
