@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
+import { Style } from 'util'
 
 interface StyleProps extends HTMLMotionProps<'nav'> {
   letters: string
@@ -16,7 +17,7 @@ interface ListItemProps {
   selected: string
 }
 
-const Style = styled(motion.nav as FC<StyleProps>)`
+export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
   position: fixed;
   left: 0;
   top: 0;
@@ -119,7 +120,5 @@ export const ListItem = styled.li<ListItemProps>`
   }}
 `
 
-export default Style
-
-Style.displayName = 'Sidebar-Style'
+SidebarNav.displayName = 'SidebarNav-Style'
 ListItem.displayName = 'ListItem-Style'

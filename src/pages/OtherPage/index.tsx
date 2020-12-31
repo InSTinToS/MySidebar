@@ -13,16 +13,15 @@ import { StoreState } from 'store'
 import { ThemeState } from 'store/theme'
 
 import Sidebar, { RouteProps } from 'components/Sidebar'
-import Content from 'components/Sidebar/Content'
 
 import { AiFillCar } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
-import { Route } from 'react-router-dom'
 
 const otherPageRoutes: RouteProps[] = [
   {
     label: 'Primeira',
     path: '/otherPage',
+    path2: '/otherPage/firstPage',
     icon: () => <AiFillCar />,
     component: () => <FirstPage />,
     exact: true,
@@ -72,17 +71,6 @@ const OtherPage: React.FC = () => {
         letters={sidebar.letters}
         background={sidebar.background}
       />
-
-      <Content noRetreatScroll>
-        {otherPageRoutes.map(route => (
-          <Route
-            key={route.path}
-            path={route.path}
-            exact={route.exact}
-            component={route.component}
-          />
-        ))}
-      </Content>
     </>
   )
 }

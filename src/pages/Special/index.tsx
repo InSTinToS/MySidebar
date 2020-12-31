@@ -14,31 +14,27 @@ import Sidebar, { RouteProps } from 'components/Sidebar'
 import { AiFillCar } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 
-const samePageRoutes: RouteProps[] = [
+const specialRoutes: RouteProps[] = [
   {
     label: 'Segunda',
-    path: '/samePage',
-    path2: '/samePage/secondPage',
+    path: '/special',
+    path2: '/special/secondPage',
     icon: () => <AiFillCar />,
-    component: () => <SecondPage />,
   },
   {
     label: 'Terceira',
-    path: '/samePage/thirdPage',
+    path: '/special/thirdPage',
     icon: () => <AiFillCar />,
-    component: () => <ThirdPage />,
   },
   {
     label: 'Quarta',
-    path: '/samePage/fourthPage',
+    path: '/special/fourthPage',
     icon: () => <AiFillCar />,
-    component: () => <FourthPage />,
   },
   {
     label: 'Quinta',
-    path: '/samePage/fifthPage',
+    path: '/special/fifthPage',
     icon: () => <AiFillCar />,
-    component: () => <FifthPage />,
   },
   {
     label: 'Other Page',
@@ -48,21 +44,19 @@ const samePageRoutes: RouteProps[] = [
   },
 ]
 
-const SamePage: React.FC = () => {
+const Special: React.FC = () => {
   const { sidebar } = useSelector<StoreState, ThemeState>(store => store.theme)
 
   return (
-    <>
-      <Sidebar
-        routes={samePageRoutes}
-        title='Same Page'
-        selected={sidebar.selected}
-        letters={sidebar.letters}
-        background={sidebar.background}
-        samePage
-      />
-    </>
+    <Sidebar
+      routes={specialRoutes}
+      title='Same Page'
+      selected={sidebar.selected}
+      letters={sidebar.letters}
+      background={sidebar.background}
+      special
+    />
   )
 }
 
-export default SamePage
+export default Special
