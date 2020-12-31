@@ -33,6 +33,7 @@ const samePageRoutes: RouteProps[] = [
     path: '/samePage/fourthPage',
     icon: () => <AiFillCar />,
     component: () => <FourthPage />,
+    windowHeight: 3,
   },
   {
     label: 'Quinta',
@@ -52,16 +53,14 @@ const SamePage: React.FC = () => {
   const { sidebar } = useSelector<StoreState, ThemeState>(store => store.theme)
 
   return (
-    <>
-      <Sidebar
-        routes={samePageRoutes}
-        title='Same Page'
-        selected={sidebar.selected}
-        letters={sidebar.letters}
-        background={sidebar.background}
-        samePage
-      />
-    </>
+    <Sidebar
+      title='Same Page'
+      routes={samePageRoutes}
+      selected={sidebar.selected}
+      letters={sidebar.letters}
+      background={sidebar.background}
+      samePage
+    />
   )
 }
 

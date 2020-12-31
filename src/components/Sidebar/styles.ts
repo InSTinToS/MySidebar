@@ -2,7 +2,6 @@ import { FC } from 'react'
 
 import { HTMLMotionProps, motion } from 'framer-motion'
 import styled, { css } from 'styled-components'
-import { Style } from 'util'
 
 interface StyleProps extends HTMLMotionProps<'nav'> {
   letters: string

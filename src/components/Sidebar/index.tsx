@@ -18,12 +18,12 @@ export interface RouteProps {
   bottom?: boolean
   exact?: boolean
   path2?: string
+  windowHeight?: number
 }
 
 interface SidebarProps {
   routes: RouteProps[]
   title?: string
-  special?: boolean
   selected: string
   letters: string
   background: string
@@ -33,7 +33,6 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({
   routes,
   title = '',
-  special = false,
   samePage = false,
   selected,
   letters,
@@ -43,9 +42,17 @@ const Sidebar: React.FC<SidebarProps> = ({
   const dispatch = useDispatch()
   const history = useHistory()
   const { pathname } = useLocation()
-  const height = window.innerHeight
 
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
+
+  const moveCorrectly = (index: number) => {
+    if (index !== 0) {
+      const beforeWindowHeight = routes[index - 1].windowHeight
+      beforeWindowHeight !== undefined
+        ? window.scrollTo(0, beforeWindowHeight * window.innerHeight * index)
+        : window.scrollTo(0, 1 * window.innerHeight * index)
+    } else window.scrollTo(0, 0)
+  }
 
   const motionContent = {
     open: {
@@ -148,17 +155,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
   }
 
-  const specialAnimation = (pathSelected: string) => {
-    const paths = routes.map(route => route.path)
-    const actualIndex = paths.indexOf(pathname)
-    const selectedIndex = paths.indexOf(pathSelected)
-
-    console.log(actualIndex, selectedIndex)
-  }
-
   useEffect(() => {
-    const searchArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
-    window.scrollTo(0, height * searchArray.indexOf(1))
+    const pathArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
+    const selectedIndex = pathArray.indexOf(1)
+    moveCorrectly(selectedIndex)
   }, [])
 
   return (
@@ -196,8 +196,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 type='button'
                 id={route.path.replaceAll('/', '-')}
                 onClick={() => {
-                  if (special) specialAnimation(route.path)
-                  window.scrollTo(0, height * index)
+                  moveCorrectly(index)
                   history.push(route.path)
                 }}
               >

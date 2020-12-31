@@ -63,15 +63,13 @@ const OtherPage: React.FC = () => {
   const { sidebar } = useSelector<StoreState, ThemeState>(store => store.theme)
 
   return (
-    <>
-      <Sidebar
-        routes={otherPageRoutes}
-        title='Other Page'
-        selected={sidebar.selected}
-        letters={sidebar.letters}
-        background={sidebar.background}
-      />
-    </>
+    <Sidebar
+      title='Other Page'
+      routes={otherPageRoutes}
+      selected={sidebar.selected}
+      letters={sidebar.letters}
+      background={sidebar.background}
+    />
   )
 }
 

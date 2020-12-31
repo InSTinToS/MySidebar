@@ -5,10 +5,10 @@ const Style = styled.section`
   align-items: center;
   justify-content: start;
 
-  height: 100vh;
+  height: 300vh;
   font-size: 3.2rem;
 
-  background-color: #6e4850;
+  background-color: red;
   color: white;
 `
 
