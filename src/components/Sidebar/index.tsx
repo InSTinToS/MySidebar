@@ -158,6 +158,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   useEffect(() => {
     const pathArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
     const selectedIndex = pathArray.indexOf(1)
+
     moveCorrectly(selectedIndex)
   }, [])
 

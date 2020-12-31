@@ -46,7 +46,6 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
 
     width: 138px;
     height: 72px;
-
     white-space: nowrap;
 
     color: ${({ letters }) => letters};
@@ -70,10 +69,6 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
 
   .Hamburger {
     margin: 24px;
-
-    svg {
-      height: 17px;
-    }
   }
 
   ul {

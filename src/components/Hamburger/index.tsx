@@ -5,24 +5,25 @@ interface HamburgerProps {
   toggle?(): void
   state: boolean
   color: string
+  size?: number
 }
 
-const Hamburger: React.FC<HamburgerProps> = ({ toggle, state, color }) => {
+const Hamburger: React.FC<HamburgerProps> = ({ toggle, state, color, size = 24 }) => {
   function onHamburgerClick() {
     toggle?.()
   }
 
-  const first = {
+  const motionFirst = {
     open: { rotate: 45, y: 7 },
     closed: { rotate: 0, y: 0 },
   }
 
-  const second = {
+  const motionSecond = {
     open: { x: 12, y: 0, width: 0 },
     closed: { x: 0, y: 0, width: 24 },
   }
 
-  const third = {
+  const motionThird = {
     open: { rotate: -45, y: -7 },
     closed: { rotate: 0, y: 0 },
   }
@@ -30,11 +31,11 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle, state, color }) => {
   const transition = { type: 'tween', duration: 0.2 }
 
   return (
-    <Style onClick={onHamburgerClick} color={color}>
+    <Style onClick={onHamburgerClick} color={color} width={`${size}px`} height={`${size - 7}px`}>
       <svg width='24' height='17' xmlns='http://www.w3.org/2000/svg'>
         <MotionRect
           y='0'
-          variants={first}
+          variants={motionFirst}
           animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
@@ -43,7 +44,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle, state, color }) => {
 
         <MotionRect
           y='7'
-          variants={second}
+          variants={motionSecond}
           animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
@@ -53,7 +54,7 @@ const Hamburger: React.FC<HamburgerProps> = ({ toggle, state, color }) => {
         <MotionRect
           fill={color}
           y='14'
-          variants={third}
+          variants={motionThird}
           animate={state ? 'open' : 'closed'}
           transition={transition}
           initial={false}
