@@ -14,7 +14,12 @@ const FifthPage: React.FC = () => {
     <Content>
       <Style>
         <h1>FifthPage</h1>
-        <button onClick={() => dispatch(ThemeActions.changeTheme())}>Change Theme</button>
+        <button
+          onClick={() => dispatch(ThemeActions.changeTheme())}
+          style={{ padding: 20, backgroundColor: '#fcfcfc' }}
+        >
+          Change Theme
+        </button>
       </Style>
     </Content>
   )

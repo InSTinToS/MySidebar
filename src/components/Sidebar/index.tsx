@@ -45,8 +45,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
 
-  const cycle = () => (open ? 'open' : 'closed')
-
   const motionBackground = {
     open: {
       width: 210,
@@ -135,7 +133,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   }, [])
 
   return (
-    <Style variants={motionBackground} animate={cycle()} letters={letters} background={background}>
+    <Style
+      variants={motionBackground}
+      animate={open ? 'open' : 'closed'}
+      initial={open ? 'open' : 'closed'}
+      letters={letters}
+      background={background}
+    >
       <div id='header'>
         <Hamburger toggle={onToggle} state={open} color={letters} />
 
@@ -148,7 +152,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </AnimatePresence>
       </div>
 
-      <motion.ul variants={motionUl} animate={cycle()}>
+      <motion.ul variants={motionUl} animate={open ? 'open' : 'closed'}>
         {routes.map((route, index) => (
           <ListItem
             selected={selected}

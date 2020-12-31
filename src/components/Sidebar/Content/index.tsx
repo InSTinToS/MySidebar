@@ -35,6 +35,7 @@ const Content: React.FC<ContentProps> = ({ children, noRetreatScroll = false }) 
     <motion.section
       variants={content}
       animate={open ? 'open' : 'closed'}
+      initial={open ? 'open' : 'closed'}
       style={{ overflow: 'hidden' }}
     >
       {children}

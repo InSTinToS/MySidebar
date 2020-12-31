@@ -73,7 +73,7 @@ const OtherPage: React.FC = () => {
         background={sidebar.background}
       />
 
-      <Content>
+      <Content noRetreatScroll>
         {otherPageRoutes.map(route => (
           <Route
             key={route.path}
