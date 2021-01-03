@@ -15,19 +15,32 @@ export interface RouteProps {
   component?: () => JSX.Element
   label: string
   path: string
+  isBigInOther?: boolean
   bottom?: boolean
   exact?: boolean
   path2?: string
-  windowHeight?: number
 }
 
 interface SidebarProps {
   routes: RouteProps[]
-  title?: string
   selected: string
   letters: string
   background: string
+  title?: string
   samePage?: boolean
+  closedWidth?: number
+  width?: number
+}
+
+function getAllIndexes(arr: boolean[], val: boolean): number[] {
+  const newArray = []
+  let i = -1
+
+  while ((i = arr.indexOf(val, i + 1)) !== -1) {
+    newArray.push(i)
+  }
+
+  return newArray
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -37,6 +50,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   selected,
   letters,
   background,
+  closedWidth = 72,
+  width = 210,
 }) => {
   const open = useSelector<StoreState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
@@ -46,26 +61,54 @@ const Sidebar: React.FC<SidebarProps> = ({
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
 
   const moveCorrectly = (index: number) => {
-    if (index !== 0) {
-      const beforeWindowHeight = routes[index - 1].windowHeight
-      beforeWindowHeight !== undefined
-        ? window.scrollTo(0, beforeWindowHeight * window.innerHeight * index)
-        : window.scrollTo(0, 1 * window.innerHeight * index)
-    } else window.scrollTo(0, 0)
+    const heightOfRoutes = routes.map(
+      route => document.getElementById(route.path.replaceAll('/', '--'))?.offsetHeight
+    )
+
+    const move =
+      heightOfRoutes !== undefined &&
+      heightOfRoutes.reduce((prev, curr, i) => {
+        if (i < index && prev !== undefined && curr !== undefined) return prev + curr
+        return prev
+      }, 0)
+
+    window.scrollTo(0, move as number)
   }
+
+  const contentSize = () => {
+    const isBig = routes.map(route => route.isBigInOther === true)
+    const indexesOfBigs = getAllIndexes(isBig, true)
+    const pathOfBigs = []
+
+    for (let i = 0; i < indexesOfBigs.length; i++) {
+      pathOfBigs.push(routes[indexesOfBigs[i]].path)
+    }
+
+    if (samePage || pathOfBigs.find(el => el === pathname))
+      return open ? `calc(100vw - ${width + 15}px)` : `calc(100vw - ${closedWidth + 15}px)`
+    return open ? `calc(100vw - ${width}px)` : `calc(100vw - ${closedWidth}px)`
+  }
+
+  useEffect(() => {
+    const pathArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
+    const selectedIndex = pathArray.indexOf(1)
+    moveCorrectly(selectedIndex)
+  }, [])
+
+  console.log(open)
 
   const motionContent = {
     open: {
-      x: '210px',
-      width: !samePage ? 'calc(100vw - 210px)' : 'calc(100vw - 210px - 15px)',
+      x: width,
+      width: contentSize(),
       transition: {
         type: 'tween',
         duration: 0.31,
       },
     },
     closed: {
-      x: '72px',
-      width: !samePage ? 'calc(100vw - 72px)' : 'calc(100vw - 72px - 15px)',
+      x: closedWidth,
+      width: contentSize(),
       transition: {
         type: 'tween',
         duration: 0.19,
@@ -75,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const motionBackground = {
     open: {
-      width: 210,
+      width: width,
       transition: {
         type: 'tween',
         duration: 0.3,
@@ -83,7 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
 
     closed: {
-      width: 72,
+      width: closedWidth,
       transition: {
         type: 'tween',
         duration: 0.2,
@@ -155,13 +198,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
   }
 
-  useEffect(() => {
-    const pathArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
-    const selectedIndex = pathArray.indexOf(1)
-
-    moveCorrectly(selectedIndex)
-  }, [])
-
   return (
     <>
       <SidebarNav
@@ -197,7 +233,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 type='button'
                 id={route.path.replaceAll('/', '-')}
                 onClick={() => {
-                  moveCorrectly(index)
+                  samePage && moveCorrectly(index)
                   history.push(route.path)
                 }}
               >
@@ -227,6 +263,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           animate={open ? 'open' : 'closed'}
           initial={open ? 'open' : 'closed'}
           style={{ overflow: 'hidden' }}
+          id={route.path.replaceAll('/', '--')}
         >
           {samePage ? (
             route.component && route.component()

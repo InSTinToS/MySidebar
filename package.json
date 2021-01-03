@@ -6,7 +6,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
     "framer-motion": "^3.1.1",
-    "motion": "^5.0.0-beta26",
     "polished": "^4.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

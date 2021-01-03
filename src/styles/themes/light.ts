@@ -4,9 +4,9 @@ const light: ThemeAttributes = {
   name: 'light',
 
   sidebar: {
-    selected: '#6e4850',
+    selected: '#00cecb',
     letters: '#fcfcfc',
-    background: '#d65881',
+    background: 'linear-gradient(135deg, #c162d2 20%, #329dff 100%)',
   },
 }
 

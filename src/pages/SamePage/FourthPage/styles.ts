@@ -8,7 +8,7 @@ const Style = styled.section`
   height: 300vh;
   font-size: 3.2rem;
 
-  background-color: red;
+  background-color: #c162d2;
   color: white;
 `
 

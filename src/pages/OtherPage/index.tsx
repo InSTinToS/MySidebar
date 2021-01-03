@@ -43,6 +43,7 @@ const otherPageRoutes: RouteProps[] = [
     path: '/otherPage/fourthPage',
     icon: () => <AiFillCar />,
     component: () => <FourthPage />,
+    isBigInOther: true,
   },
   {
     label: 'Quinta',

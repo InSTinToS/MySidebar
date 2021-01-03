@@ -22,8 +22,16 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
   top: 0;
 
   height: 100vh;
+  z-index: 3;
 
-  background-color: ${({ background }) => background};
+  ${({ background }) =>
+    background.search(/gradient/)
+      ? css`
+          background: ${background};
+        `
+      : css`
+          background-color: ${background};
+        `}
 
   .icon {
     width: 24px;
@@ -44,7 +52,6 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
     display: flex;
     align-items: center;
 
-    width: 138px;
     height: 72px;
     white-space: nowrap;
 

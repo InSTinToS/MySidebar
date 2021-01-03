@@ -33,7 +33,6 @@ const samePageRoutes: RouteProps[] = [
     path: '/samePage/fourthPage',
     icon: () => <AiFillCar />,
     component: () => <FourthPage />,
-    windowHeight: 3,
   },
   {
     label: 'Quinta',
