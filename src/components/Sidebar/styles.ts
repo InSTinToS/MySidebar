@@ -38,6 +38,8 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
     height: 24px;
     margin: 24px;
 
+    user-select: none;
+
     svg {
       width: 24px;
       height: 24px;
@@ -57,7 +59,8 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
 
     color: ${({ letters }) => letters};
 
-    cursor: default;
+    user-select: none;
+    width: 100%;
   }
 
   #title {
@@ -98,6 +101,8 @@ export const SidebarNav = styled(motion.nav as FC<StyleProps>)`
 `
 
 export const ListItem = styled.li<ListItemProps>`
+  cursor: pointer;
+
   ${({ bottom }) =>
     bottom &&
     css`

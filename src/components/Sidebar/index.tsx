@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect } from 'react'
 import { ListItem, SidebarNav } from './styles'
 
+import getAllIndexes from 'utils/getAllIndexes'
+
 import { SidebarActions } from 'store/sidebar'
 import { StoreState } from 'store'
 
 import Hamburger from 'components/Hamburger'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, Variants } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, useHistory, useLocation } from 'react-router-dom'
 
@@ -30,6 +32,7 @@ interface SidebarProps {
   samePage?: boolean
   closedWidth?: number
   width?: number
+  scrollBarSize?: number
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -41,6 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   background,
   closedWidth = 72,
   width = 210,
+  scrollBarSize = 15,
 }) => {
   const open = useSelector<StoreState, boolean>(({ sidebar }) => sidebar.open)
   const dispatch = useDispatch()
@@ -49,15 +53,20 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
 
-  const getAllIndexes = (arr: boolean[], val: boolean): number[] => {
-    const newArray = []
-    let i = -1
+  const contentSize = (): string => {
+    const isBig = routes.map(route => route.isBigInOther === true)
+    const indexesOfBigs = getAllIndexes(isBig, true)
+    const pathOfBigs = []
 
-    while ((i = arr.indexOf(val, i + 1)) !== -1) {
-      newArray.push(i)
+    for (let i = 0; i < indexesOfBigs.length; i++) {
+      pathOfBigs.push(routes[indexesOfBigs[i]].path)
     }
 
-    return newArray
+    if (samePage || pathOfBigs.find(el => el === pathname))
+      return open
+        ? `calc(100vw - ${width + scrollBarSize}px)`
+        : `calc(100vw - ${closedWidth + scrollBarSize}px)`
+    return open ? `calc(100vw - ${width}px)` : `calc(100vw - ${closedWidth}px)`
   }
 
   const moveCorrectly = useCallback(
@@ -78,27 +87,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     [routes]
   )
 
-  const contentSize = (): string => {
-    const isBig = routes.map(route => route.isBigInOther === true)
-    const indexesOfBigs = getAllIndexes(isBig, true)
-    const pathOfBigs = []
-
-    for (let i = 0; i < indexesOfBigs.length; i++) {
-      pathOfBigs.push(routes[indexesOfBigs[i]].path)
-    }
-
-    if (samePage || pathOfBigs.find(el => el === pathname))
-      return open ? `calc(100vw - ${width + 15}px)` : `calc(100vw - ${closedWidth + 15}px)`
-    return open ? `calc(100vw - ${width}px)` : `calc(100vw - ${closedWidth}px)`
-  }
-
   useEffect(() => {
     const pathArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
     const selectedIndex = pathArray.indexOf(1)
     moveCorrectly(selectedIndex)
   }, [moveCorrectly, pathname, routes])
 
-  const motionContent = {
+  const motionContent: Variants = {
     open: {
       x: width,
       width: contentSize(),
@@ -117,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
   }
 
-  const motionBackground = {
+  const motionBackground: Variants = {
     open: {
       width: width,
       transition: {
@@ -125,7 +120,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         duration: 0.3,
       },
     },
-
     closed: {
       width: closedWidth,
       transition: {
@@ -135,63 +129,26 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
   }
 
-  const motionUl = {
-    open: {
-      transition: {
-        type: 'tween',
-        staggerChildren: 0.1,
-      },
-    },
-
-    closed: {
-      transition: {
-        type: 'tween',
-        staggerChildren: 0,
-      },
-    },
-  }
-
-  const motionTitle = {
-    open: {
-      opacity: [0, 1],
-      x: [-24, 0],
-      transition: {
-        type: 'tween',
-        duration: 0.4,
-      },
-    },
-
-    closed: {
-      opacity: [1, 0],
-      x: [0, -16],
-      transition: {
-        type: 'tween',
-        duration: 0.1,
-      },
-    },
-  }
-
-  const motionLiText = {
-    open: {
-      opacity: [0, 1],
-      x: [-24, 0],
-      transition: {
-        type: 'tween',
-        duration: 0.4,
-      },
-    },
-
-    closed: {
-      opacity: [1, 0],
-      x: [0, -16],
-      transition: {
-        type: 'tween',
-        duration: 0.1,
-      },
-    },
-
+  const motionTitle: Variants = {
     initial: {
       opacity: 0,
+      x: -24,
+    },
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: 'tween',
+        duration: 0.4,
+      },
+    },
+    closed: {
+      opacity: 0,
+      x: -24,
+      transition: {
+        type: 'tween',
+        duration: 0.1,
+      },
     },
   }
 
@@ -216,7 +173,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           </AnimatePresence>
         </div>
 
-        <motion.ul variants={motionUl} animate={open ? 'open' : 'closed'}>
+        <ul>
           {routes.map((route, index) => (
             <ListItem
               selected={selected}
@@ -242,7 +199,30 @@ const Sidebar: React.FC<SidebarProps> = ({
 
                 <AnimatePresence>
                   {open && (
-                    <motion.div variants={motionLiText} initial='initial' className='label'>
+                    <motion.div
+                      className='label'
+                      initial={{
+                        opacity: 0,
+                        x: -24,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                          type: 'tween',
+                          duration: 0.4,
+                          delay: 0.1 * index,
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        x: -24,
+                        transition: {
+                          type: 'tween',
+                          duration: 0.1,
+                        },
+                      }}
+                    >
                       {route.label}
                     </motion.div>
                   )}
@@ -250,7 +230,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </button>
             </ListItem>
           ))}
-        </motion.ul>
+        </ul>
       </SidebarNav>
 
       {routes.map(route => (
