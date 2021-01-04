@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { ListItem, SidebarNav } from './styles'
 
 import { SidebarActions } from 'store/sidebar'
@@ -32,17 +32,6 @@ interface SidebarProps {
   width?: number
 }
 
-function getAllIndexes(arr: boolean[], val: boolean): number[] {
-  const newArray = []
-  let i = -1
-
-  while ((i = arr.indexOf(val, i + 1)) !== -1) {
-    newArray.push(i)
-  }
-
-  return newArray
-}
-
 const Sidebar: React.FC<SidebarProps> = ({
   routes,
   title = '',
@@ -60,22 +49,36 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const onToggle = () => dispatch(SidebarActions.toggleSidebar(!open))
 
-  const moveCorrectly = (index: number) => {
-    const heightOfRoutes = routes.map(
-      route => document.getElementById(route.path.replaceAll('/', '--'))?.offsetHeight
-    )
+  const getAllIndexes = (arr: boolean[], val: boolean): number[] => {
+    const newArray = []
+    let i = -1
 
-    const move =
-      heightOfRoutes !== undefined &&
-      heightOfRoutes.reduce((prev, curr, i) => {
-        if (i < index && prev !== undefined && curr !== undefined) return prev + curr
-        return prev
-      }, 0)
+    while ((i = arr.indexOf(val, i + 1)) !== -1) {
+      newArray.push(i)
+    }
 
-    window.scrollTo(0, move as number)
+    return newArray
   }
 
-  const contentSize = () => {
+  const moveCorrectly = useCallback(
+    (index: number): void => {
+      const heightOfRoutes = routes.map(
+        route => document.getElementById(route.path.replaceAll('/', '--'))?.offsetHeight
+      )
+
+      const move =
+        heightOfRoutes !== undefined &&
+        heightOfRoutes.reduce((prev, curr, i) => {
+          if (i < index && prev !== undefined && curr !== undefined) return prev + curr
+          return prev
+        }, 0)
+
+      window.scrollTo(0, move as number)
+    },
+    [routes]
+  )
+
+  const contentSize = (): string => {
     const isBig = routes.map(route => route.isBigInOther === true)
     const indexesOfBigs = getAllIndexes(isBig, true)
     const pathOfBigs = []
@@ -93,9 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     const pathArray = routes.map(({ path }) => (path === pathname ? 1 : 0))
     const selectedIndex = pathArray.indexOf(1)
     moveCorrectly(selectedIndex)
-  }, [])
-
-  console.log(open)
+  }, [moveCorrectly, pathname, routes])
 
   const motionContent = {
     open: {
@@ -167,10 +168,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         type: 'tween',
         duration: 0.1,
       },
-    },
-
-    initial: {
-      opacity: 0,
     },
   }
 
