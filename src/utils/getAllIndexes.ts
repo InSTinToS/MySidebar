@@ -1,9 +1,10 @@
-const getAllIndexes = (array: any[], searchingValue: any): any[] => {
+const getAllIndexes = <T>(array: T[], searchingValue: T): number[] => {
   const newArray = []
-  let i = -1
+  let i = array.indexOf(searchingValue)
 
-  while ((i = array.indexOf(searchingValue, i + 1)) !== -1) {
+  while (i !== -1) {
     newArray.push(i)
+    i = array.indexOf(searchingValue, i + 1)
   }
 
   return newArray

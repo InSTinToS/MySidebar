@@ -21,6 +21,7 @@ export interface RouteProps {
   bottom?: boolean
   exact?: boolean
   path2?: string
+  noContentMove?: boolean
 }
 
 interface SidebarProps {
@@ -55,10 +56,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const contentSize = (): string => {
     const isBig = routes.map(route => route.isBigInOther === true)
-    const indexesOfBigs = getAllIndexes(isBig, true)
+    const indexesOfBigs = getAllIndexes<boolean>(isBig, true)
     const pathOfBigs = []
 
-    for (let i = 0; i < indexesOfBigs.length; i++) {
+    for (let i = 0; i < indexesOfBigs.length; i += 1) {
       pathOfBigs.push(routes[indexesOfBigs[i]].path)
     }
 
@@ -71,18 +72,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const moveCorrectly = useCallback(
     (index: number): void => {
-      const heightOfRoutes = routes.map(
-        route => document.getElementById(route.path.replaceAll('/', '--'))?.offsetHeight
-      )
-
-      const move =
-        heightOfRoutes !== undefined &&
-        heightOfRoutes.reduce((prev, curr, i) => {
-          if (i < index && prev !== undefined && curr !== undefined) return prev + curr
-          return prev
-        }, 0)
-
-      window.scrollTo(0, move as number)
+      const path = routes[index].path
+      document.getElementById(path.replaceAll('/', '--'))?.scrollIntoView({ behavior: 'smooth' })
     },
     [routes]
   )
@@ -114,7 +105,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const motionBackground: Variants = {
     open: {
-      width: width,
+      width,
       transition: {
         type: 'tween',
         duration: 0.3,
@@ -237,8 +228,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         <motion.section
           key={route.path}
           variants={motionContent}
-          animate={open ? 'open' : 'closed'}
-          initial={open ? 'open' : 'closed'}
+          animate={open && !route.noContentMove ? 'open' : 'closed'}
+          initial={open && !route.noContentMove ? 'open' : 'closed'}
           style={{ overflow: 'hidden' }}
           id={route.path.replaceAll('/', '--')}
         >
