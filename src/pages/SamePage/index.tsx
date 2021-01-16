@@ -17,32 +17,31 @@ import { useSelector } from 'react-redux'
 const samePageRoutes: RouteProps[] = [
   {
     label: 'Segunda',
-    path: '/samePage',
-    path2: '/samePage/secondPage',
+    paths: ['/samePage', '/samePage/secondPage'],
     icon: () => <AiFillCar />,
     component: () => <SecondPage />,
   },
   {
     label: 'Terceira',
-    path: '/samePage/thirdPage',
+    paths: ['/samePage/thirdPage'],
     icon: () => <AiFillCar />,
     component: () => <ThirdPage />,
   },
   {
     label: 'Quarta',
-    path: '/samePage/fourthPage',
+    paths: ['/samePage/fourthPage'],
     icon: () => <AiFillCar />,
     component: () => <FourthPage />,
   },
   {
     label: 'Quinta',
-    path: '/samePage/fifthPage',
+    paths: ['/samePage/fifthPage'],
     icon: () => <AiFillCar />,
     component: () => <FifthPage />,
   },
   {
     label: 'Other Page',
-    path: '/otherPage',
+    paths: ['/otherPage'],
     icon: () => <AiFillCar />,
     bottom: true,
   },
